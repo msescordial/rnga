@@ -54,62 +54,86 @@ TravelDemandMatrix = [0 400 200 60 80 150 75 75 30 160 30 25 35 0 0;
 % T
 TimeMatrix = DistanceMatrix;
 
-k = 4;              % k shortest Paths for each node to node
-s = 4;              % no. of routes in a bus network
-waiting_time = 1;
+k = 4;                      % k shortest Paths for each node to node
+s = 3;                      % no. of routes in a bus network
+waiting_time = 0.5;
 transfer_time = 5;
+population_size = 40;       % for GA; must be divisible by 4
+maxiter = 5;                % maximum iterations of GA
+max_T = 5;                      % temperature (T = 50)
 
 n = size(DistanceMatrix,1);
 
 % ----- INITIALIZATION -----
-% Generate All Candidate Bus Routes
+% Generate All Candidate Bus Routes    
 [BusRouteID, AllPaths, AllCosts, TotalNoOfRoutes] = generateBusRoutes(DistanceMatrix,k);
 fprintf('No. of routes generated is %d\n\n', TotalNoOfRoutes);
 
-% Generate Initial Network S0      
+% Generate Initial Solution S0 
 [S0,S0r] = generateInitialNetwork(DistanceMatrix, BusRouteID, TotalNoOfRoutes, s);
-fprintf('Initial Network S0: \n\n');
-displayRouteSet(S0,BusRouteID);
+%disp(S0); disp(S0r);
+fprintf('Initial Solution S0: \n\n'); displayRouteSet(S0,BusRouteID);
 
-% ----- EVALUATING OBJECTIVE FUNCTION -----
+% ----- MAIN FLOWCHART -----
+T = max_T; 
+iter = 1;                   % iteration for SA
 
-SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer_time);
-disp("Time Matrix of the Solution"); disp(SolutionTimeMatrix);
+% Initialize Population for GA
+init_pop_matrix = InitialPopulationforGA(population_size, S0r, s, n, BusRouteID, TotalNoOfRoutes, ...
+    DistanceMatrix, TimeMatrix, TravelDemandMatrix, waiting_time, transfer_time);
 
-% Main Flowchart 
-% T = 50;               % temperature
-T = 5;
-iter = 1;               % iteration
-maxiter = 20;           % maximum iterations of GA
-stop = 0;
-
-% while (stop == 0)
 while (T > 0)
     while (iter <= maxiter)
-        E0 = ObjFuncVal(N0c,TravelDemandMatrix,SolutionTimeMatrix,n);       
-                
-        [N1] = GeneticAlgo(S0, maxiter, n, DistanceMatrix, BusRouteID, TotalNoOfRoutes,s);  % obtain new solution with GA
-        [N1c] = IDtoRoute(N1,BusRouteID,n); 
-        t1 = TotalTime(N1c,s,n,DistanceMatrix); %disp(t1);
-        E1 = ObjFuncVal(N1c,TravelDemandMatrix,t1,n); %disp(E1);                            % compute objective function value
 
-        disp("N0"); disp(S0); %disp("N0c"); disp(N0c); 
-        disp("E0"); disp(E0);
-        disp("N1"); disp(N1); %disp("N1c"); disp(N1c); 
-        disp("E1"); disp(E1);
         disp("iter"); disp(iter); disp("Temperature:"); disp(T);
-  
-        % N0 = N1;
-        iter = iter+1;
+
+        if (iter == 1 && T == max_T)
+            SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer_time);
+            E0 = ObjFuncVal(S0r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatrix,n);
+            disp("E0"); disp(E0);
+
+            % Determine New Solution S1 using GA           
+            [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, ...
+                TotalNoOfRoutes, s, waiting_time, transfer_time, population_size);  % obtain new solution with GA
+        else
+            S0r = StringtoRouteSet(S0,s,n); %disp("S0r"); disp(S0r);
+            SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer_time);
+            E0 = ObjFuncVal(S0r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatrix,n);
+            disp("E0"); disp(E0);
+
+            % Determine New Solution S1 using GA           
+            [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, ...
+                TotalNoOfRoutes, s, waiting_time, transfer_time, population_size);  % obtain new solution with GA
+        end
         
+        % Evaluate Objective Function Value, E1
+        [S1r] = StringtoRouteSet(S1,s,n);
+        fprintf('Final Route Set S1: \n\n'); 
+        for a=1:s
+            fprintf('Route %d:', a); 
+            br = BusRoute(S1r{a,1});
+            displayBusRoute(br);
+        end
+        SolutionTimeMatrix = TotalTime(S1r,s,TimeMatrix, waiting_time, transfer_time);
+        %disp("Time Matrix of the Solution"); disp(SolutionTimeMatrix);
+        E1 = ObjFuncVal(S1r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatrix,n);   
+        disp("E1"); disp(E1);
+
+        iter = iter+1;
+
         % Simulated Annealing Part
         if (E1 < E0)
-            S0 = N1;
+            S0 = S1;
+            
         end
         if (E1 > E0)
-            P = exp(-(E1-E0)/T);
-            if P > rand
-                S0 = N1;
+            % P = exp(-(E1-E0)/T);
+            P = exp(-(E1-E0)/(1000*T));
+            disp("rand"); disp(rand);
+            disp("P"); disp(P);
+            if (P > rand)
+                disp("Accept worse solution since P > rand");
+                S0 = S1;
             end
         end    
     end
@@ -117,13 +141,14 @@ while (T > 0)
     if (iter > maxiter)
         % Change the Population in the GA process
         
+
         T = T - 1;
         iter = 1;
     end
     
 end
-    stop = 1;
-% end
+
+
 
 toc;
 
