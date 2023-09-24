@@ -58,9 +58,9 @@ k = 4;                      % k shortest Paths for each node to node
 s = 3;                      % no. of routes in a bus network
 waiting_time = 0.5;
 transfer_time = 5;
-population_size = 40;       % for GA; must be divisible by 4
+population_size = 200;       % for GA; must be divisible by 4
 maxiter = 5;                % maximum iterations of GA
-max_T = 5;                      % temperature (T = 50)
+max_T = 10;                  % temperature (T = 50)
 
 n = size(DistanceMatrix,1);
 
@@ -121,33 +121,52 @@ while (T > 0)
 
         iter = iter+1;
 
-        % Simulated Annealing Part
-        if (E1 < E0)
-            S0 = S1;
-            
-        end
-        if (E1 > E0)
-            % P = exp(-(E1-E0)/T);
-            P = exp(-(E1-E0)/(1000*T));
-            disp("rand"); disp(rand);
-            disp("P"); disp(P);
-            if (P > rand)
-                disp("Accept worse solution since P > rand");
+        if (T == 1 && iter == maxiter+1)
+            break;
+        else
+            % Simulated Annealing Part
+            if (E1 < E0)
                 S0 = S1;
             end
-        end    
+            if (E1 > E0)
+                % P = exp(-(E1-E0)/T);
+                P = exp(-(E1-E0)/(1000*T));
+                if (P > rand)
+                    disp("P"); disp(P);
+                    disp("Accept worse solution since P > rand");
+                    S0 = S1;
+                end
+            end
+        end
     end
         
     if (iter > maxiter)
         % Change the Population in the GA process
-        
-
+        init_pop_matrix = InitialPopulationforGA(population_size, S0r, s, n, BusRouteID, TotalNoOfRoutes, ...
+                DistanceMatrix, TimeMatrix, TravelDemandMatrix, waiting_time, transfer_time);
         T = T - 1;
         iter = 1;
     end
     
 end
 
+% T = 0, so output the final solution
+if (E1 < E0)
+    S_final = S1;
+else
+    S_final = S0;
+end
+[Sfr] = StringtoRouteSet(S_final,s,n);
+fprintf('Final Route Set: \n\n'); 
+for a=1:s
+    fprintf('Route %d:', a); 
+    br = BusRoute(Sfr{a,1});
+    displayBusRoute(br);
+end
+SolutionTimeMatrix = TotalTime(Sfr,s,TimeMatrix, waiting_time, transfer_time);
+%disp("Time Matrix of the Solution"); disp(SolutionTimeMatrix);
+E_final = ObjFuncVal(Sfr,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatrix,n);   
+disp("Objective Function Value"); disp(E_final);
 
 
 toc;
