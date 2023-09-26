@@ -59,8 +59,11 @@ s = 3;                      % no. of routes in a bus network
 waiting_time = 0.5;
 transfer_time = 5;
 population_size = 200;       % for GA; must be divisible by 4
-maxiter = 5;                % maximum iterations of GA
-max_T = 10;                  % temperature (T = 50)
+
+
+maxiter_SA = 5;              % maximum iterations per loop of SA
+maxgen_GA = 20;              % maximum no. of generations of GA
+max_T = 10;                   % temperature (T = 50)
 
 n = size(DistanceMatrix,1);
 
@@ -83,7 +86,7 @@ init_pop_matrix = InitialPopulationforGA(population_size, S0r, s, n, BusRouteID,
     DistanceMatrix, TimeMatrix, TravelDemandMatrix, waiting_time, transfer_time);
 
 while (T > 0)
-    while (iter <= maxiter)
+    while (iter <= maxiter_SA)
 
         disp("iter"); disp(iter); disp("Temperature:"); disp(T);
 
@@ -93,7 +96,7 @@ while (T > 0)
             disp("E0"); disp(E0);
 
             % Determine New Solution S1 using GA           
-            [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, ...
+            [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxgen_GA, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, ...
                 TotalNoOfRoutes, s, waiting_time, transfer_time, population_size);  % obtain new solution with GA
         else
             S0r = StringtoRouteSet(S0,s,n); %disp("S0r"); disp(S0r);
@@ -102,13 +105,13 @@ while (T > 0)
             disp("E0"); disp(E0);
 
             % Determine New Solution S1 using GA           
-            [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, ...
+            [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxgen_GA, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, ...
                 TotalNoOfRoutes, s, waiting_time, transfer_time, population_size);  % obtain new solution with GA
         end
         
         % Evaluate Objective Function Value, E1
         [S1r] = StringtoRouteSet(S1,s,n);
-        fprintf('Final Route Set S1: \n\n'); 
+        fprintf('New Solution Set by GA: \n\n'); 
         for a=1:s
             fprintf('Route %d:', a); 
             br = BusRoute(S1r{a,1});
@@ -121,7 +124,7 @@ while (T > 0)
 
         iter = iter+1;
 
-        if (T == 1 && iter == maxiter+1)
+        if (T == 1 && iter == maxiter_SA+1)
             break;
         else
             % Simulated Annealing Part
@@ -130,7 +133,7 @@ while (T > 0)
             end
             if (E1 > E0)
                 % P = exp(-(E1-E0)/T);
-                P = exp(-(E1-E0)/(1000*T));
+                P = exp(-(E1-E0)/(T));
                 if (P > rand)
                     disp("P"); disp(P);
                     disp("Accept worse solution since P > rand");
@@ -140,7 +143,7 @@ while (T > 0)
         end
     end
         
-    if (iter > maxiter)
+    if (iter > maxiter_SA)
         % Change the Population in the GA process
         init_pop_matrix = InitialPopulationforGA(population_size, S0r, s, n, BusRouteID, TotalNoOfRoutes, ...
                 DistanceMatrix, TimeMatrix, TravelDemandMatrix, waiting_time, transfer_time);

@@ -1,4 +1,4 @@
-function [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, ...
+function [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxgen_GA, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, ...
                                     BusRouteID, TotalNoOfRoutes, s, waiting_time, transfer_time, population_size)
 
     % init_pop_matrix = InitialPopulationforGA(population_size, S0r, s, n, BusRouteID, TotalNoOfRoutes, ...
@@ -40,8 +40,8 @@ function [S1] = GeneticAlgoforSAGA(init_pop_matrix, S0r, maxiter, n, DistanceMat
 
 
     iter = 1;
-    while (iter <= maxiter)
-    disp("Iteration:"); disp(iter);
+    while (iter <= maxgen_GA)
+    %disp("Iteration:"); disp(iter);
     if (iter ~= 1)
         % compute  for the objective function value, and sort
         gen_routes = cell(population_size,2);
