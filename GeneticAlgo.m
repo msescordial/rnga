@@ -1,8 +1,6 @@
-function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, TotalNoOfRoutes, s, waiting_time, transfer_time)
+function [S1] = GeneticAlgo(population_size, S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, TotalNoOfRoutes, s, transfer_time)
     s = length(S0); 
     
-    % Specify Population Size
-    population_size = 100;           % divisible by 4
     init_pop_matrix = cell(population_size,3);
     
     % Creating the Initial Population 
@@ -10,7 +8,7 @@ function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMat
     % First Row
     init_pop_matrix{1,1} = 1;
     init_pop_matrix{1,2} = transpose(S0);
-    S0_SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer_time);
+    S0_SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time);
     ofv0 = ObjFuncVal(S0r,TravelDemandMatrix,TimeMatrix,S0_SolutionTimeMatrix,n);
     init_pop_matrix{1,3} = ofv0;   init_pop_matrix{1,4} = ofv0;   
     % Succeeding Rows
@@ -18,7 +16,7 @@ function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMat
         init_pop_matrix{g+1,1} = g+1;
         [S1,S1r] = generateInitialNetwork(DistanceMatrix, BusRouteID, TotalNoOfRoutes,s);
         init_pop_matrix{g+1,2} = transpose(S1);
-        S1_SolutionTimeMatrix = TotalTime(S1r,s,TimeMatrix, waiting_time, transfer_time);
+        S1_SolutionTimeMatrix = TotalTime(S1r,s,TimeMatrix, transfer_time);
         ofv1 = ObjFuncVal(S1r,TravelDemandMatrix,TimeMatrix,S1_SolutionTimeMatrix,n);
         init_pop_matrix{g+1,3} = ofv1; init_pop_matrix{g+1,4} = ofv1;  
     end
@@ -56,6 +54,8 @@ function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMat
     % Note: Demarcation Line at the end of every nth node
 
     iter = 1;
+
+    % GA LOOP
     while (iter <= maxiter)
     disp("Iteration:"); disp(iter);
     if (iter ~= 1)
@@ -72,7 +72,7 @@ function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMat
                 p_s = p_s+n;
             end
             %disp("route sor"); disp(sor);
-            sor_SolutionTimeMatrix = TotalTime(sor,s,TimeMatrix, waiting_time, transfer_time);
+            sor_SolutionTimeMatrix = TotalTime(sor,s,TimeMatrix, transfer_time);
             %disp("Solution Time Matrix"); disp(sor_SolutionTimeMatrix);
             obj_val = ObjFuncVal(sor,TravelDemandMatrix,DistanceMatrix,sor_SolutionTimeMatrix,n);
             gen_routes{ov,2} = obj_val;
@@ -95,6 +95,10 @@ function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMat
         %disp("Sorted Population:"); disp(sorted_pop);
         solution_s0 = sorted_pop;
         intercrossover = 1;
+
+        % display the best solution for each iteration/generation
+        disp("Best Solution for this Iteration"); %displaySolution(sorted_pop(1,:),s,n);
+        disp(rxsorted(1,1));
 
     elseif (iter == 1) 
         % ready for crossover 
@@ -282,8 +286,9 @@ function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMat
     end
 
     new_generation(hp+1:hp*2,:) = after_mutation;
-    disp("New Generation"); %disp(new_generation);
-    displayPopulationSolution(new_generation,n);
+    %disp("New Generation"); %disp(new_generation);
+    %displayPopulationSolution(new_generation,n);
+
 
     iter = iter + 1;
 
@@ -303,7 +308,7 @@ function [S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMat
                 p_s = p_s+n;
             end
             %disp("route sor"); disp(sor);
-            sor_SolutionTimeMatrix = TotalTime(sor,s,TimeMatrix, waiting_time, transfer_time);
+            sor_SolutionTimeMatrix = TotalTime(sor,s,TimeMatrix, transfer_time);
             %disp("Solution Time Matrix"); disp(sor_SolutionTimeMatrix);
             obj_val = ObjFuncVal(sor,TravelDemandMatrix,DistanceMatrix,sor_SolutionTimeMatrix,n);
             gen_routes{ov,2} = obj_val;

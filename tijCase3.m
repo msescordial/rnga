@@ -1,4 +1,4 @@
-function [tij]=tijCase3(i,j,routei, routef, routej, waiting_time, transfer_time, TimeMatrix)
+function [tij]=tijCase3(i,j,routei, routef, routej, transfer_time, TimeMatrix)
 
     % Initialization
     tij = Inf; 
@@ -54,19 +54,19 @@ function [tij]=tijCase3(i,j,routei, routef, routej, waiting_time, transfer_time,
       
     % 3rd row of M  
     for a=1:k1*k2
-        [tih1]=tijCase1(i,M(1,a),routei, waiting_time, TimeMatrix);
+        [tih1]=tijCase1(i,M(1,a),routei, TimeMatrix);
         M(3,a)=tih1;
     end 
     
     % 4th row of M
     for b=1:k1*k2
-        [th1h2]=tijCase1(M(1,b),M(2,b),routef, waiting_time, TimeMatrix);
+        [th1h2]=tijCase1(M(1,b),M(2,b),routef, TimeMatrix);
         M(4,b)=th1h2;
     end
     
     % 5th row of M
     for c=1:k1*k2
-        [th2j]=tijCase1(M(2,c),j,routej, waiting_time, TimeMatrix);
+        [th2j]=tijCase1(M(2,c),j,routej, TimeMatrix);
         M(5,c)=th2j;
     end
     

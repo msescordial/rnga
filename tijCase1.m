@@ -1,7 +1,7 @@
 % Computing Travel Time Between Node i and Node j
 % Case 1: No Transfer Needed
 
-function [tij]=tijCase1(i,j,common_route, waiting_time, TimeMatrix) 
+function [tij]=tijCase1(i,j,common_route, TimeMatrix) 
     
     % Initialization
     tij = Inf; 
@@ -36,7 +36,8 @@ function [tij]=tijCase1(i,j,common_route, waiting_time, TimeMatrix)
         for m = 1: length(g)-1
             tij = tij + TimeMatrix(g(m),g(m+1));
         end
-        tij = tij + waiting_time*(length(g)-2);
+        %tij = tij + waiting_time*(length(g)-2);
+        %tij = tij;
     end
     
     

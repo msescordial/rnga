@@ -1,7 +1,7 @@
 % Computing Travel Time Between Node i and Node j
 % Case 2: One Transfer is Needed
 
-function [tij]=tijCase2(i,j, routei, routej, waiting_time, transfer_time, TimeMatrix) 
+function [tij]=tijCase2(i,j, routei, routej, transfer_time, TimeMatrix) 
     
     % Initialization
     tij = Inf; 
@@ -29,13 +29,15 @@ function [tij]=tijCase2(i,j, routei, routej, waiting_time, transfer_time, TimeMa
     
     % 1st row of M  
     for a=1:length(h)
-        [tih]=tijCase1(i,h(a),routei, waiting_time, TimeMatrix);
+        %[tih]=tijCase1(i,h(a),routei, waiting_time, TimeMatrix);
+        [tih]=tijCase1(i,h(a),routei, TimeMatrix);
         M(1,a)=tih;
     end
     
     % 2nd row of M
     for b=1:length(h)
-        [thj]=tijCase1(h(b),j,routej, waiting_time, TimeMatrix);
+        %[thj]=tijCase1(h(b),j,routej, waiting_time, TimeMatrix);
+        [thj]=tijCase1(h(b),j,routej, TimeMatrix);
         M(2,b)=thj;
     end
     

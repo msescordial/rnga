@@ -1,4 +1,4 @@
-function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer_time)
+function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time)
     n = size(TimeMatrix,1);
         
     % Initialization
@@ -69,7 +69,8 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer
                 for w = 1:c1
                     p1 = crn(1,w);
                     common_route = BusRoute(B(p1,:));
-                    crn(2,w) = tijCase1(i,j,common_route, waiting_time, TimeMatrix);
+                    %crn(2,w) = tijCase1(i,j,common_route, waiting_time, TimeMatrix);
+                    crn(2,w) = tijCase1(i,j,common_route, TimeMatrix);
                 end
                 %disp("Case 1: No Transfer is Needed");
                 %disp("crn"); disp(crn);
@@ -90,7 +91,8 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer
                         %disp("Case 2: One Transfer is Needed"); 
                         crn2(1,f4) = pi;
                         crn2(2,f4) = pj;
-                        crn2(3,f4) = tijCase2(i,j, routei, routej, waiting_time, transfer_time, TimeMatrix);
+                        %crn2(3,f4) = tijCase2(i,j, routei, routej, waiting_time, transfer_time, TimeMatrix);
+                        crn2(3,f4) = tijCase2(i,j, routei, routej, transfer_time, TimeMatrix);
                         f4 = f4+1;
                         %disp("crn2"); disp(crn2);
                         SolutionTimeMatrix(i,j) = min(crn2(3,:)); 
@@ -165,7 +167,8 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer
                         crn3(1,f7) = pi3;
                         crn3(2,f7) = ptf;
                         crn3(3,f7) = pj3;
-                        crn3(4,f7) = tijCase3(i,j,routei, routef, routej, waiting_time, transfer_time, TimeMatrix);
+                        %crn3(4,f7) = tijCase3(i,j,routei, routef, routej, waiting_time, transfer_time, TimeMatrix);
+                        crn3(4,f7) = tijCase3(i,j,routei, routef, routej, transfer_time, TimeMatrix);
                         f7 = f7 + 1;
                     end                               
                 end

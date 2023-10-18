@@ -1,22 +1,15 @@
-clc
-clear
-tic
-
-[DistanceMatrix,TimeMatrix,TravelDemandMatrix,t,k,s,transfer_time]=network_mandl();
+function [DistanceMatrix,TimeMatrix,TravelDemandMatrix,TerminalNodes,k,s,transfer_time]=network_mandl()
 
 %------------------------------ Remarks: ----------------------------------
-% Input: 
+% Network Inputs: 
 %  d = Stop-to-Stop Distance Matrix
 %  T = Stop-to-Stop Time Matrix
 %  D = Travel Demand Matrix
+%  t = Terminal Nodes
 %  k = for k-shortest paths algorithm: this refers to the first k
 %    shortest paths
 %  s = no. of bus routes for the network
-%  waiting_time = time for each stop - in-vehichle (constant)
 %  transfer_time = time for each transfer (constant)
-
-
-% case: Mandl's network  
 
 % d
 DistanceMatrix = [0 8 inf inf inf inf inf inf inf inf inf inf inf inf inf;
@@ -54,45 +47,14 @@ TravelDemandMatrix = [0 400 200 60 80 150 75 75 30 160 30 25 35 0 0;
                       0 5 5 5 0 10 5 5 0 200 15 0 45 0 0;
                       0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 
-k = 4;              % k shortest Paths for each node to node
-s = 3;              % no. of routes in a bus network
-waiting_time = 0.5;
-transfer_time = 5;
-
-n = size(DistanceMatrix,1);
-
-% ----- INITIALIZATION -----
-% Generate All Candidate Bus Routes
-[BusRouteID, AllPaths, AllCosts, TotalNoOfRoutes] = generateBusRoutes(DistanceMatrix,k);
-fprintf('No. of routes generated is %d\n\n', TotalNoOfRoutes);
-
-% Generate Initial Network S0  
-[S0,S0r] = generateInitialNetwork(DistanceMatrix, BusRouteID, TotalNoOfRoutes, s);
-fprintf('Initial Route Set S0: \n\n'); displayRouteSet(S0,BusRouteID);
-
-% Evaluate Objective Function Value
-SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, waiting_time, transfer_time);
-disp("Time Matrix of the Solution"); disp(SolutionTimeMatrix);
-E0 = ObjFuncVal(S0r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatrix,n);   
-disp("E0"); disp(E0);
+% t
+TerminalNodes = [1 8 9 12 13];      % terminal nodes
 
 
-% Genetic Algorithm    
-maxiter = 5;           % maximum iterations of GA
-[S1] = GeneticAlgo(S0, S0r, maxiter, n, DistanceMatrix, TravelDemandMatrix, TimeMatrix, BusRouteID, ...
-       TotalNoOfRoutes, s, waiting_time, transfer_time);
-[S1r] = StringtoRouteSet(S1,s,n); 
+k = 4;                  % k shortest Paths for each node to node
+s = 3;                  % no. of routes in a bus network
+transfer_time = 5;      % transfer time is 5 minutes
 
-% Evaluate Objective Function Value
-fprintf('Final Route Set S1: \n\n'); 
-for a=1:s
-    fprintf('Route %d:', a); 
-    br = BusRoute(S1r{a,1});
-    displayBusRoute(br);
 end
-SolutionTimeMatrix = TotalTime(S1r,s,TimeMatrix, waiting_time, transfer_time);
-disp("Time Matrix of the Solution"); disp(SolutionTimeMatrix);
-E1 = ObjFuncVal(S1r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatrix,n);   
-disp("E1"); disp(E1);
 
-toc;
+

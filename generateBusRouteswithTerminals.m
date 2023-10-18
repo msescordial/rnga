@@ -45,8 +45,8 @@ function [BusRouteID, AllPaths, AllCosts, no_of_routes] = generateBusRouteswithT
     %    fprintf('Cost of Path %d:\n',j); disp(AllCosts(j));
     % end
     
-    fprintf('All %d Paths:\n',no_of_routes); disp(AllPaths);
-    fprintf('All Costs of %d Paths:\n',no_of_routes); disp(AllCosts);
+    %fprintf('All %d Paths:\n',no_of_routes); disp(AllPaths);
+    %fprintf('All Costs of %d Paths:\n',no_of_routes); disp(AllCosts);
     
     % Assigning Bus Route IDS    
     BusRouteID = [];
