@@ -3,11 +3,11 @@ clear
 tic
 
 % Inputs for GA:
-maxiter = 20;                    % maximum iterations of GA (no. of generations)
-population_size = 200;           % must be divisible by 4
+maxiter = 5;                    % maximum iterations of GA (no. of generations)
+population_size = 100;           % must be divisible by 4
 
 
-[DistanceMatrix,TimeMatrix,TravelDemandMatrix,TerminalNodes,k,s,transfer_time]=network_mandl();
+[DistanceMatrix,TimeMatrix,TravelDemandMatrix,TerminalNodes,k,s,transfer_time]=network_india();
 
 n = size(DistanceMatrix,1);
 

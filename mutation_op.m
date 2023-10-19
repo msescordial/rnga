@@ -3,7 +3,7 @@ function new_node = mutation_op(node, DistanceMatrix, vec, n)
     for p1=1:n
         check(1,p1) = p1;
     end
-    A = ones(1,15)-ismember(check,vec);
+    A = ones(1,n)-ismember(check,vec);
     B = zeros(1,sum(A));
     p3 = 1;
     for p2=1:n
