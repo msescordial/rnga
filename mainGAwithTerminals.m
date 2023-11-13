@@ -3,7 +3,7 @@ clear
 tic
 
 % Inputs for GA:
-maxiter = 20;                    % maximum iterations of GA (no. of generations)
+maxiter = 30;                    % maximum iterations of GA (no. of generations)
 population_size = 200;           % must be divisible by 4
 
 

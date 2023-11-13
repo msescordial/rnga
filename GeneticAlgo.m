@@ -100,6 +100,11 @@ function [S1] = GeneticAlgo(population_size, S0, S0r, maxiter, n, DistanceMatrix
         disp("Best Solution for this Iteration"); %displaySolution(sorted_pop(1,:),s,n);
         disp(rxsorted(1,1));
 
+        %diff = var(rxsorted); disp(diff);
+        %if (diff < 10^(-10))
+        %    break;
+        %end
+
     elseif (iter == 1) 
         % ready for crossover 
         intercrossover = 1;

@@ -90,6 +90,7 @@ function [feasible_solution]=repair_infeasibility(infeasible_solution, s, n, Dis
                         replaced_route_no(1,rn) = k1; rn = rn + 1;
                         break;
                     else
+                    %if ((p ~= lenr) && (p ~= 1))
                         [feasible_route1] = case1feasible(missing_node, neighbor, p, route3, DistanceMatrix);
                         if (feasible_route1 ~= 0)
                             new_route = feasible_route1; %disp("Case 1"); disp(new_route);

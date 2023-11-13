@@ -18,7 +18,7 @@ function [S0,S0r] = generateInitialNetwork(netCostMatrix, BusRouteID, TotalNoOfR
             r = randi([1,TotalNoOfRoutes],1);     % generate s random integers     
             route = BusRouteID{r,2};       
 
-            if (length(route) >= 4)     % constraint - route length
+            if (length(route) >= 5)     % constraint - route length
                 S0(a,1) = r;            % S0 is composed of these s bus route IDs
                 S0r{a,1} = route;       % S0r is composed of these s bus routes
                 a = a + 1;

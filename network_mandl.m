@@ -11,8 +11,8 @@ function [DistanceMatrix,TimeMatrix,TravelDemandMatrix,TerminalNodes,k,s,transfe
 %  s = no. of bus routes for the network
 %  transfer_time = time for each transfer (constant)
 
-% d
-DistanceMatrix = [0 8 inf inf inf inf inf inf inf inf inf inf inf inf inf;
+% T
+TimeMatrix = [0 8 inf inf inf inf inf inf inf inf inf inf inf inf inf;
                     8 0 2 3 6 inf inf inf inf inf inf inf inf inf inf;
                     inf 2 0 inf inf 3 inf inf inf inf inf inf inf inf inf;
                     inf 3 inf 0 4 4 inf inf inf inf inf 10 inf inf inf;
@@ -27,11 +27,11 @@ DistanceMatrix = [0 8 inf inf inf inf inf inf inf inf inf inf inf inf inf;
                     inf inf inf inf inf inf inf inf inf 10 5 inf 0 2 inf;
                     inf inf inf inf inf inf inf inf inf 8 inf inf 2 0 inf;
                     inf inf inf inf inf 3 2 2 8 inf inf inf inf inf 0];
-% T
-TimeMatrix = DistanceMatrix;
+% d
+DistanceMatrix = 0.3*TimeMatrix;        % base on the average travel speed of 18 kph
 
 % D
-TravelDemandMatrix = [0 400 200 60 80 150 75 75 30 160 30 25 35 0 0;
+TD = [0 400 200 60 80 150 75 75 30 160 30 25 35 0 0;
                       400 0 50 120 20 180 90 90 15 130 20 10 10 5 0;
                       200 50 0 40 60 180 90 90 15 45 20 10 10 5 0;
                       60 120 40 0 50 100 50 50 15 240 40 25 10 5 0;
@@ -47,12 +47,14 @@ TravelDemandMatrix = [0 400 200 60 80 150 75 75 30 160 30 25 35 0 0;
                       0 5 5 5 0 10 5 5 0 200 15 0 45 0 0;
                       0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 
+TravelDemandMatrix = TD*0.20;
+
 % t
-TerminalNodes = [1 8 9 12 13];      % terminal nodes
+TerminalNodes = [1 8 9 12 14];      % terminal nodes
 
 
 k = 4;                  % k shortest Paths for each node to node
-s = 3;                  % no. of routes in a bus network
+s = 4;                  % no. of routes in a bus network
 transfer_time = 5;      % transfer time is 5 minutes
 
 end
