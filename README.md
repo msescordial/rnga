@@ -1,6 +1,22 @@
 # route-network-genetic-algo
 
-The Matlab script files above generate the "optimal" _s_ routes of a road network using Genetic Algorithm and/or Simulated Annealing, where _s_ is predefined no. of routes. The main file is mainGAwithTerminals.m which contains the inputs of the road network. To generate candidate routes for initializing the route network, k-Shortest Path and Dijkstra's algorithms are used, in which the source code came from https://www.mathworks.com/matlabcentral/fileexchange/32513-k-shortest-path-yen-s-algorithm and the file is kSP.m.
+The Matlab script files above generate the "optimal" _s_ routes of a road network using Genetic Algorithm, where _s_ is predefined no. of routes. To generate candidate routes for initializing the route network, k-Shortest Path and Dijkstra's algorithms are used, in which the source code came from https://www.mathworks.com/matlabcentral/fileexchange/32513-k-shortest-path-yen-s-algorithm and the file is kSP.m.
+
+The main file is mainGAwithTerminals.m.
+
+Two road networks are used:
+1. A benchmark network which is the network by Mandl, in which the details are in the following file: network_Mandl.m
+2. A real-life road network of a city in India, from the work of Suman and Bolia (2019), in which the details are in the following file: network_india.m
+
+The following user-defined parameters can be changed:
+1. _s_ - the number of routes (under the files: network_Mandl.m or network_india.m)
+2. _TerminalNodes_ - the nodes which serve as terminals (under the files: network_Mandl.m or network_india.m)
+3. _transfer_time_ - the time required to make one transfer (under the files: network_Mandl.m or network_india.m)
+4. _maxiter_ - the maximum iterations (or the number of generations) for genetic algorithm (under the file: mainGAwithTerminals.m.)
+5. _population_size_ - the population size for each generation for genetic algorithm (under the file: mainGAwithTerminals.m.)
+6. _P_ce_ - the inter-crossover probability (under the file: GeneticAlgo.m, line 133)
+7. _P_ca_ - the intra-crossover probability (under the file: GeneticAlgo.m, line 192)
+8. _P_m_ - the mutation probability (under the file: GeneticAlgo.m, line 226)
 
 Below are the descriptions for each file:
 1. BusRoute.m - finalizes the substring representation of a route
