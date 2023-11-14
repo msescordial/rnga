@@ -10,13 +10,14 @@ Two road networks are used:
 
 The following user-defined parameters can be changed:
 1. _s_ - the number of routes (under the files: network_Mandl.m or network_india.m)
-2. _TerminalNodes_ - the nodes which serve as terminals (under the files: network_Mandl.m or network_india.m)
-3. _transfer_time_ - the time required to make one transfer (under the files: network_Mandl.m or network_india.m)
-4. _maxiter_ - the maximum iterations (or the number of generations) for genetic algorithm (under the file: mainGAwithTerminals.m.)
-5. _population_size_ - the population size for each generation for genetic algorithm (under the file: mainGAwithTerminals.m.)
-6. _P_ce_ - the inter-crossover probability (under the file: GeneticAlgo.m, line 133)
-7. _P_ca_ - the intra-crossover probability (under the file: GeneticAlgo.m, line 192)
-8. _P_m_ - the mutation probability (under the file: GeneticAlgo.m, line 226)
+2. the road network, either network_mandl() or network_india() (under the file: mainGAwithTerminals.m., line 10)
+3. _TerminalNodes_ - the nodes which serve as terminals (under the files: network_Mandl.m or network_india.m)
+4. _transfer_time_ - the time required to make one transfer (under the files: network_Mandl.m or network_india.m)
+5. _maxiter_ - the maximum iterations (or the number of generations) for genetic algorithm (under the file: mainGAwithTerminals.m., line 6)
+6. _population_size_ - the population size for each generation for genetic algorithm (under the file: mainGAwithTerminals.m., line 7)
+7. _P_ce_ - the inter-crossover probability (under the file: GeneticAlgo.m, line 133)
+8. _P_ca_ - the intra-crossover probability (under the file: GeneticAlgo.m, line 192)
+9. _P_m_ - the mutation probability (under the file: GeneticAlgo.m, line 226)
 
 Below are the descriptions for each file:
 1. BusRoute.m - finalizes the substring representation of a route
