@@ -10,7 +10,7 @@ Two road networks are used:
 
 The following user-defined parameters can be changed:
 1. _s_ - the number of routes (under the files: network_Mandl.m or network_india.m)
-2. the road network, either network_mandl() or network_india() (under the file: mainGAwithTerminals.m., line 10)
+2. _the road network_, either network_mandl() or network_india() (under the file: mainGAwithTerminals.m., line 10)
 3. _TerminalNodes_ - the nodes which serve as terminals (under the files: network_Mandl.m or network_india.m)
 4. _transfer_time_ - the time required to make one transfer (under the files: network_Mandl.m or network_india.m)
 5. _maxiter_ - the maximum iterations (or the number of generations) for genetic algorithm (under the file: mainGAwithTerminals.m., line 6)
