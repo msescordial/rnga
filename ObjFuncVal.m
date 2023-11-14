@@ -32,4 +32,17 @@ function E0 = ObjFuncVal(S0r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatri
     E2 = cb*(2*sum(dist));
     
     E0 = E1 + E2;
+
+
+
+    % Average Travel Time 
+%    E1 = 0;
+%    for i=1:n
+%        for j=1:n
+%            E1 = E1 + TravelDemandMatrix(i,j)*SolutionTimeMatrix(i,j);
+%        end
+%    end
+%    TotalDemand = sum(TravelDemandMatrix, "all");
+%    E0 = E1/TotalDemand;
+    
 end
