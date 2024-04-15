@@ -26,7 +26,7 @@ function [BusRouteID, AllPaths, AllCosts, no_of_routes] = generateBusRouteswithT
             [shortestPaths, totalCosts] = kSP(netCostMatrix, source, destination, k);
             for i = 1: length(shortestPaths)
                 % fprintf('Path # %d:\n',i);
-                % disp(shortestPaths{i})
+                %disp(shortestPaths{i})
                 % fprintf('Cost of path %d is %5.2f\n\n',i,totalCosts(i));
             	no_of_routes = no_of_routes + 1;       
                 b = length(shortestPaths{i});

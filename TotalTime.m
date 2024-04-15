@@ -1,4 +1,4 @@
-function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time)
+function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time, mn)
     n = size(TimeMatrix,1);
         
     % Initialization
@@ -23,6 +23,18 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time)
         end
     end
     end
+
+    % Added: for a missing node
+    for i=1:n
+    for j=1:n
+        if (i ~= j)
+            if (i==mn || j==mn)
+        	    SolutionTimeMatrix(i,j) = 0; 
+            end
+        end
+    end
+    end    
+
     
     %disp("SolutionTimeMatrix After Case 1");
     %disp(SolutionTimeMatrix); 
@@ -31,7 +43,7 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time)
     %    and Case 1: No Transfer is Needed
     for i=1:n
     for j=1:n
-         if ( abs(i-j) > 0 )                
+         if ( abs(i-j) > 0 && i~=mn && j~=mn)                
             % Identifying the Routes where Nodes i and j are in  
             f1 = 1;
             f2 = 1;
@@ -185,9 +197,11 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time)
     for i=1:n
     for j=1:n
          if ( abs(i-j) > 0 ) 
-         if (SolutionTimeMatrix(i,j) == 0)
-             SolutionTimeMatrix(i,j) = Inf;
-         end
+             if (i~=mn && j~=mn)
+                if (SolutionTimeMatrix(i,j) == 0)
+                    SolutionTimeMatrix(i,j) = Inf;
+                end
+             end
          end
     end
     end

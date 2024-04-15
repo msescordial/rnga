@@ -1,4 +1,4 @@
-function [DistanceMatrix,TimeMatrix,TravelDemandMatrix,TerminalNodes,k,s,transfer_time]=network_manila()
+function [DistanceMatrix,TimeMatrix,TravelDemandMatrix,TerminalNodes,k,s,transfer_time]=network_manila_2()
 
 %------------------------------ Remarks: ----------------------------------
 % Network Inputs: 
@@ -23,7 +23,7 @@ for i=1:59
         end
     end
 end
-disp(TimeMatrix)
+disp("Time Matrix"); disp(TimeMatrix);
 
 
 % d
@@ -38,7 +38,7 @@ for i=1:59
         end
     end
 end
-disp(DistanceMatrix)
+disp("Distance Matrix"); disp(DistanceMatrix);
 
 % D 
 % temporary ones
@@ -51,13 +51,14 @@ for i=1:59
     end
 end
 TravelDemandMatrix = TD;
+disp("Travel Demand Matrix"); disp(TravelDemandMatrix);
 
 % t
 TerminalNodes = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25];      % terminal nodes
+%TerminalNodes = [2 3 4 5 7 8 9 11 12 13 14 16 17 18 19 20 21 24 25];
 
-
-k = 3;                  % k shortest Paths for each node to node
-s = 30;                  % no. of routes in a bus network
+k = 4;                  % k shortest Paths for each node to node
+s = 20;                 % no. of routes in a bus network
 transfer_time = 5;      % transfer time is 5 minutes
 
 end
