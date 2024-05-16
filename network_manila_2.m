@@ -41,16 +41,8 @@ end
 disp("Distance Matrix"); disp(DistanceMatrix);
 
 % D 
-% temporary ones
-TD = ones(59,59);
-for i=1:59
-    for j=1:59
-        if abs(i-j)==0
-            DistanceMatrix(i,j) = 0;
-        end
-    end
-end
-TravelDemandMatrix = TD;
+load("final_demand.mat","-mat");
+TravelDemandMatrix = array;
 disp("Travel Demand Matrix"); disp(TravelDemandMatrix);
 
 % t

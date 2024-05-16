@@ -1,4 +1,4 @@
-function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time, mn)
+function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time)
     n = size(TimeMatrix,1);
         
     % Initialization
@@ -25,15 +25,15 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time, mn)
     end
 
     % Added: for a missing node
-    for i=1:n
-    for j=1:n
-        if (i ~= j)
-            if (i==mn || j==mn)
-        	    SolutionTimeMatrix(i,j) = 0; 
-            end
-        end
-    end
-    end    
+    %for i=1:n
+    %for j=1:n
+    %    if (i ~= j)
+    %        if (i==mn || j==mn)
+    %    	    SolutionTimeMatrix(i,j) = 0; 
+    %        end
+    %    end
+    %end
+    %end    
 
     
     %disp("SolutionTimeMatrix After Case 1");
@@ -43,7 +43,7 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time, mn)
     %    and Case 1: No Transfer is Needed
     for i=1:n
     for j=1:n
-         if ( abs(i-j) > 0 && i~=mn && j~=mn)                
+         %if ( abs(i-j) > 0 && i~=mn && j~=mn)                
             % Identifying the Routes where Nodes i and j are in  
             f1 = 1;
             f2 = 1;
@@ -112,7 +112,7 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time, mn)
                 end
                 end                 
             end
-    	end
+    	%end
     end
     end
     
@@ -194,17 +194,17 @@ function SolutionTimeMatrix = TotalTime(S0r,s,TimeMatrix, transfer_time, mn)
     end
     end
 
-    for i=1:n
-    for j=1:n
-         if ( abs(i-j) > 0 ) 
-             if (i~=mn && j~=mn)
-                if (SolutionTimeMatrix(i,j) == 0)
-                    SolutionTimeMatrix(i,j) = Inf;
-                end
-             end
-         end
-    end
-    end
+    %for i=1:n
+    %for j=1:n
+    %     if ( abs(i-j) > 0 ) 
+    %         if (i~=mn && j~=mn)
+    %            if (SolutionTimeMatrix(i,j) == 0)
+    %                SolutionTimeMatrix(i,j) = Inf;
+    %            end
+    %         end
+    %     end
+    %end
+    %end
    
     %disp("SolutionTimeMatrix After Case 3");
     %disp(SolutionTimeMatrix);      

@@ -6,7 +6,7 @@ function E0 = ObjFuncVal(S0r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatri
     E1 = 0;
     for i=1:n
         for j=1:n
-            E1 = E1 + TravelDemandMatrix(i,j)*SolutionTimeMatrix(i,j);
+            E1 = E1 + TravelDemandMatrix(i,j)*(SolutionTimeMatrix(i,j)/60);
         end
     end
     E1 = cp*E1;
@@ -29,7 +29,7 @@ function E0 = ObjFuncVal(S0r,TravelDemandMatrix,DistanceMatrix,SolutionTimeMatri
         end
     end
     %fprintf('Distance Travelled by Routes: \n'); disp(dist);    
-    E2 = cb*(2*sum(dist));
+    E2 = cb*(2*sum(dist))/1000;
     
     E0 = E1 + E2;
 
