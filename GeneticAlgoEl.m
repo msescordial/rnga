@@ -130,7 +130,9 @@ function [S1] = GeneticAlgoEl(population_size, S0, S0r, maxiter, n, DistanceMatr
             sorted_pop(j,:)=rysorted{1,j};
         end
         %disp("Sorted Population:"); disp(sorted_pop);
-        solution_s0 = sorted_pop;
+        solution_s0(1:population_size*ep,:) = sorted_pop(1:population_size*ep,:);
+        curr_solution_s0 = sorted_pop;
+
         intercrossover = 1;
 
         % display the best solution for each iteration/generation
